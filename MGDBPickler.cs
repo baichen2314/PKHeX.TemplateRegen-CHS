@@ -50,7 +50,7 @@ public class MGDBPickler(string PKHeXLegality, string EventGalleryRepoPath)
     private void BinWrite(string outDir, string path, string ext)
     {
         if (!Directory.Exists(path))
-            LogUtil.Log($"input path not found ({ext})");
+            LogUtil.Log($"未找到输入路径（{ext}）");
         else
             BinFiles(path, ext, Path.Combine(outDir, $"{ext}.pkl"));
     }

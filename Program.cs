@@ -1,5 +1,6 @@
 using System.Reflection;
-using System.Text.Json;
+using System.Text;
+using Newtonsoft.Json;
 using PKHeX.TemplateRegen;
 
 Console.WriteLine("Hello, World!");
@@ -11,8 +12,8 @@ var logconsole = new NLog.Targets.ConsoleTarget("logconsole");
 config.AddRule(NLog.LogLevel.Info, NLog.LogLevel.Fatal, logconsole);
 NLog.LogManager.Configuration = config;
 
-if (RunUpdate(Assembly.GetEntryAssembly()!.Location)) 
-    Console.WriteLine("Done!");
+if (RunUpdate(Assembly.GetEntryAssembly()!.Location))
+    Console.WriteLine("完成!");
 
 Console.ReadKey();
 return;
@@ -29,24 +30,23 @@ bool RunUpdate(string localPath)
     var settingsPath = Path.Combine(localDir, jsonName);
     if (!File.Exists(settingsPath))
     {
-        LogUtil.Log($"{jsonName} not found. Creating default.");
+        LogUtil.Log($"未找到{jsonName}。正在创建默认文件。");
         WriteDefaultSettings(settingsPath);
         return false;
     }
-    var text = File.ReadAllText(settingsPath);
-    if (JsonSerializer.Deserialize(text, ProgramSettingsContext.Default.ProgramSettings) is not { } settings)
+    var text = File.ReadAllText(settingsPath, Encoding.UTF8);
+    if (JsonConvert.DeserializeObject<ProgramSettings>(text) is not ProgramSettings settings)
     {
-        LogUtil.Log($"{jsonName} is invalid. Overwriting with default.");
+        LogUtil.Log($"{jsonName}无效。正在用默认文件覆盖。");
         WriteDefaultSettings(settingsPath);
         return false;
     }
 
     if (!Directory.Exists(settings.PathPKHeX))
     {
-        LogUtil.Log("resource path not found");
+        LogUtil.Log("资源路径未找到");
         return false;
     }
-
 
     var mgdb = new MGDBPickler(settings.PathPKHeX, settings.PathRepoEvGal);
     mgdb.Update();
@@ -59,11 +59,9 @@ bool RunUpdate(string localPath)
 static void WriteDefaultSettings(string path)
 {
     var result = new ProgramSettings();
-    var options = new JsonSerializerOptions
+    var json = JsonConvert.SerializeObject(result, Formatting.Indented, new JsonSerializerSettings
     {
-        WriteIndented = true,
-        DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull,
-    };
-    var json = JsonSerializer.Serialize(result, options);
-    File.WriteAllText(path, json);
+        NullValueHandling = NullValueHandling.Ignore
+    });
+    File.WriteAllText(path, json, Encoding.UTF8);
 }

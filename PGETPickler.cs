@@ -13,7 +13,7 @@ public class PGETPickler(string PathPKHeXLegality, string PathRepoPGET)
             exe = Directory.EnumerateFiles(PathRepoPGET, "*.exe", SearchOption.AllDirectories).FirstOrDefault(z => z.Contains("WinForms"));
             if (exe is null)
             {
-                LogUtil.Log("PGET executable not found");
+                LogUtil.Log("未找到PGET可执行文件");
                 return;
             }
         }
@@ -35,7 +35,7 @@ public class PGETPickler(string PathPKHeXLegality, string PathRepoPGET)
         using var process = Process.Start(startInfo);
         if (process == null)
         {
-            LogUtil.Log($"Failed to start {exe} executable");
+            LogUtil.Log($"无法启动{exe}可执行文件");
             return;
         }
         process.WaitForExit();
@@ -49,9 +49,9 @@ public class PGETPickler(string PathPKHeXLegality, string PathRepoPGET)
             var filename = Path.GetFileName(file);
             var destFile = Path.Combine(dest, filename);
             File.Copy(file, destFile, true);
-            LogUtil.Log($"Copied {filename} to {dest}");
+            LogUtil.Log($"已将{filename}复制到{dest}");
             ctr++;
         }
-        LogUtil.Log($"Copied {ctr} files to {dest}");
+        LogUtil.Log($"已将{ctr}个文件复制到{dest}");
     }
 }
