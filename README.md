@@ -1,6 +1,6 @@
 # PKHeX.TemplateRegen
 根据配置的settings.json文件，为PKHeX重新生成合法性二进制文件。
-
+请先修改ProgramSettings.cs内的路径，写的很清楚了，修改之后直接构建，运行第一次生成settings.json文件，第二次直接运行程序完成更新。
 使用说明：
 
 1.克隆PKHeX、PoGoEncTool和EventsGallery仓库。它们可以被克隆到同一个父文件夹中，也可以分别克隆到不同的父文件夹中。

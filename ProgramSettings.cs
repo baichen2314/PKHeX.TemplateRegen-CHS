@@ -7,12 +7,19 @@ public sealed partial class ProgramSettingsContext : JsonSerializerContext;
 
 public class ProgramSettings
 {
-    public string RepoFolder { get; set; } = @"D:\文档\GitHub\Resources";
-    public string RepoPKHeXLegality { get; set; } = @"D:\文档\GitHub\PKHeX\PKHeX.Core\Resources\legality"; // where the legality files are stored
+    public string RepoFolder { get; set; } = @"C:\Users\kapho\source\repos";// 目前来看没啥用
+    public string RepoPKHeXLegality { get; set; } = @"PKHeX\PKHeX.Core\Resources\legality"; // 从Github上拉取的PKHeX相对路径
 
-    public string RepoNameEvGal { get; set; } = @"D:\文档\GitHub\EventsGallery"; // relative if using RepoFolder
-    public string RepoNamePGET { get; set; } = @"D:\文档\GitHub\PoGoEncTool"; // relative if using RepoFolder
+    public string RepoNameEvGal { get; set; } = @"EventsGallery"; // 从Github上拉取的EventsGallery相对路径
+    public string RepoNamePGET { get; set; } = @"PoGoEncTool"; // 从Github上拉取的PoGoEncTool相对路径
 
+	/*
+	示范：
+	public string RepoFolder { get; set; } = @"D:\GitHub\Resources";
+    public string RepoPKHeXLegality { get; set; } = @"D:\GitHub\PKHeX\PKHeX.Core\Resources\legality";
+    public string RepoNameEvGal { get; set; } = @"D:\GitHub\EventsGallery";
+    public string RepoNamePGET { get; set; } = @"D:\GitHub\PoGoEncTool"; 
+	*/
     // Logic to get full paths
     public string PathPKHeX => GetRepoPath(RepoPKHeXLegality);
 
